@@ -6,6 +6,25 @@ A home for agents on your computer. Codex works in its own persistent browser ta
 
 This is the **Windows x64 browser-only beta**. It includes no VM, desktop automation, game code, personal accounts, or browser profile. MIT licensed.
 
+## Why I built it
+
+I wanted agents to have a home on my laptop. When their work happened in my browser, it got in the way of what I was doing. I also found it hard to keep track of work scattered across chats, tabs and apps. I wanted to open one place and see what my agents were doing, which accounts they were using, and what needed my attention—separate from my own online life.
+
+Agent Spaces gives that work a persistent place to live. An agent can open its own tab, complete a task, and leave its website session and confirmed login available for the next agent. I can watch, step in when needed, or leave it working while I use my computer normally.
+
+An agent should not quietly sit waiting for a CAPTCHA or a login while I assume it is still working. When a connected agent requests help, AS displays a branded alert over other Windows apps. Clicking it takes me to the relevant tab or account choice. I finish the step and return control to the waiting agent. It does not depend on me remembering to check the right Codex chat. Alerts do not steal keyboard focus; Windows settings, exclusive fullscreen apps or other always-on-top windows can affect visibility.
+
+## What AS adds around Codex
+
+Codex is the agent: it understands the task, decides what to do, and calls tools. AS supplies the browser workspace and continuity around those actions:
+
+- **One visible home for browser work**, with task tabs, ownership, activity history and a profile separate from my personal browser.
+- **Accounts that outlive a chat.** For example, one agent can create an email account and save it after success; another can use that saved email to sign up elsewhere, retrieve the verification message and save the new login for future tasks.
+- **Attention that reaches me.** A waiting agent can trigger an app-level alert while I am elsewhere on the laptop, with a direct route back to the relevant work.
+- **A shared handoff flow.** Take control, finish the human step, then return control without rebuilding the browser session.
+
+Some agent products already offer their own browsers or overlapping features. AS's purpose is to bring these controls, accounts and ongoing browser work together in a workspace I can see and manage. It does not replace Codex, make the model intrinsically smarter, or guarantee that an agent can complete every website's workflow.
+
 ## What it does
 
 - Runs multiple agents in separate owned tabs, with persistent cookies and website sessions.
@@ -23,8 +42,8 @@ This is the **Windows x64 browser-only beta**. It includes no VM, desktop automa
 Requirements: Windows 10/11 x64, [Node.js 22 or newer](https://nodejs.org/), [Codex CLI](https://developers.openai.com/codex/cli/) on PATH, and Codex desktop or CLI. To build WebView2, install the [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0). Its browser runtime is [Microsoft Edge WebView2 Evergreen](https://developer.microsoft.com/microsoft-edge/webview2/).
 
 ```powershell
-git clone https://github.com/Seraphine-ops/agent-spaces.git
-cd agent-spaces
+git clone https://github.com/Seraphine-ops/agent-spaces-windows-browseronly.git
+cd agent-spaces-windows-browseronly
 & '.\Setup Agent Spaces.cmd'
 ```
 

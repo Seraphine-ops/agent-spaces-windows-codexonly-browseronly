@@ -64,5 +64,10 @@
       "shortcutName": "Agent Spaces Browser"
     }
   },
-  "author": "Agent Spaces contributors"
+  "author": "Agent Spaces contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Seraphine-ops/agent-spaces-windows-browseronly.git"
+  },
+  "homepage": "https://github.com/Seraphine-ops/agent-spaces-windows-browseronly#readme"
 }
