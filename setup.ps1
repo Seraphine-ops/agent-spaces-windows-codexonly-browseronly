@@ -17,12 +17,12 @@ function Install-Prerequisite([string]$Id, [string]$Label) {
 }
 
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) { Install-Prerequisite 'OpenJS.NodeJS.LTS' 'Node.js LTS' }
-$nodeMajor = [int](& node -p 'process.versions.node.split(".")[0]')
+$nodeMajor = [int]((& node --version).TrimStart('v').Split('.')[0])
 if ($nodeMajor -lt 22) { throw 'Upgrade Node.js to version 22 or later, then rerun setup.ps1.' }
 
 if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { Install-Prerequisite 'Microsoft.DotNet.SDK.8' '.NET 8 SDK' }
 $sdkList = & dotnet --list-sdks
-if (-not ($sdkList -match '^8\.')) { Install-Prerequisite 'Microsoft.DotNet.SDK.8' '.NET 8 SDK' }
+if (-not ($sdkList | Where-Object { $_ -match '^(\d+)\.' -and [int]$Matches[1] -ge 8 })) { Install-Prerequisite 'Microsoft.DotNet.SDK.8' '.NET 8 SDK' }
 
 Write-Host 'Installing locked application dependencies...'
 & npm.cmd ci

@@ -25,7 +25,7 @@ Requirements: Windows 10/11 x64, [Node.js 22 or newer](https://nodejs.org/), [Co
 ```powershell
 git clone https://github.com/Seraphine-ops/agent-spaces.git
 cd agent-spaces
-& '.\setup.ps1'
+& '.\Setup Agent Spaces.cmd'
 ```
 
 Or download the source ZIP, extract it, and double-click **Setup Agent Spaces.cmd**. Setup installs missing prerequisites through Windows Package Manager, installs the locked npm dependencies, builds the browser host, registers Codex on launch, and opens AS. Windows may ask for installation permission. It does not install a VM. Already have the prerequisites and prefer manual setup?

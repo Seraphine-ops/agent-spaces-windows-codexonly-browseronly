@@ -14,6 +14,7 @@ The default directory is `%LOCALAPPDATA%\Agent Spaces Browser`:
 | settings.json | Engine, pause and Codex preference settings |
 | runtime.json | Temporary local broker port and authentication token |
 | launch.json | Installed executable location used by the MCP launcher |
+| login-diagnostics.jsonl | Rotating WebView2 status diagnostics; URL queries and arbitrary path segments are redacted |
 
 Passwords pending capture/consent are held in application memory and expire; they are not logged as activity. Explicit Copy actions place the selected value on the system clipboard, which other software or clipboard history may access. The app does not automatically clear the clipboard.
 
