@@ -42,8 +42,8 @@ Some agent products already offer their own browsers or overlapping features. AS
 Requirements: Windows 10/11 x64, [Node.js 22 or newer](https://nodejs.org/), [Codex CLI](https://developers.openai.com/codex/cli/) on PATH, and Codex desktop or CLI. To build WebView2, install the [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0). Its browser runtime is [Microsoft Edge WebView2 Evergreen](https://developer.microsoft.com/microsoft-edge/webview2/).
 
 ```powershell
-git clone https://github.com/Seraphine-ops/agent-spaces-windows-browseronly.git
-cd agent-spaces-windows-browseronly
+git clone https://github.com/Seraphine-ops/agent-spaces-windows-codexonly-browseronly.git
+cd agent-spaces-windows-codexonly-browseronly
 & '.\Setup Agent Spaces.cmd'
 ```
 
