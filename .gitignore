@@ -1,0 +1,14 @@
+node_modules/
+state/
+dist/
+app/webview2-host/bin/
+app/webview2-host/obj/
+app/webview2-host/publish/
+*.log
+.env
+.env.*
+*.enc
+runtime.json
+launch.json
+export.cjs
+finalize.cjs

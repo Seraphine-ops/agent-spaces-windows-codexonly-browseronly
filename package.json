@@ -1,0 +1,68 @@
+{
+  "name": "agent-spaces-browser",
+  "version": "0.2.0",
+  "private": true,
+  "description": "A persistent browser home for agents, with Codex integration, accounts and human handoff.",
+  "type": "module",
+  "main": "app/main.cjs",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "os": [
+    "win32"
+  ],
+  "scripts": {
+    "start": "node tools/start-app.mjs",
+    "build:webview2": "dotnet publish app/webview2-host/AgentSpaces.WebViewHost.csproj -c Release -r win-x64 --self-contained true -o app/webview2-host/publish --nologo -p:DebugType=None -p:DebugSymbols=false",
+    "test": "node --test tests/*.cjs",
+    "test:browser": "node tests/browser-integration.mjs",
+    "test:popups": "node tests/browser-popup-integration.mjs",
+    "test:accounts": "node tests/account-capture-integration.mjs electron && node tests/account-capture-integration.mjs webview2",
+    "test:manual": "node tests/manual-login-history.mjs electron && node tests/manual-login-history.mjs webview2",
+    "test:all": "npm test && npm run test:browser && npm run test:popups && npm run test:accounts && npm run test:manual && npm run test:security",
+    "dist": "electron-builder --win nsis --x64 --publish never",
+    "postinstall": "node node_modules/electron/install.js",
+    "test:security": "node tests/security-integration.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "tldts": "^7.4.12",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "electron": "44.3.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "AgentSpaces.Browser",
+    "productName": "Agent Spaces Browser",
+    "asar": false,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "app/**/*.cjs",
+      "app/ui/**/*",
+      "app/assets/*",
+      "app/webview2-host/publish/**/*",
+      "browser-mcp.mjs",
+      "runtime-start.mjs",
+      "runtime-path.cjs",
+      "package.json",
+      "LICENSE"
+    ],
+    "win": {
+      "icon": "app/assets/agent-spaces-workspace.ico",
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Agent Spaces Browser"
+    }
+  },
+  "author": "Agent Spaces contributors"
+}

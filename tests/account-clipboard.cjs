@@ -1,0 +1,7 @@
+const {test}=require('node:test'),assert=require('node:assert/strict');
+const {copyAccountField}=require('../app/account-clipboard.cjs');
+function fixture(){let buffer='previous clipboard',reveals=0;return {accounts:{check(){},list:()=>[{id:'a',username:'Fixture',email:'fixture@example.test'}],reveal:()=>{reveals++;return {password:'fixture-password'};}},clipboard:{writeText:s=>buffer=s,readText:()=>buffer},reveals:()=>reveals};}
+test('explicit copy replaces the old clipboard even when password is not revealed',()=>{const f=fixture();const r=copyAccountField(f.accounts,f.clipboard,{id:'a',field:'password'});assert.equal(f.clipboard.readText(),'fixture-password');assert.deepEqual(r,{copied:true});});
+test('copy username/email without decrypting password',()=>{const f=fixture();for(const field of ['username','email']){copyAccountField(f.accounts,f.clipboard,{id:'a',field});assert.equal(f.clipboard.readText(),f.accounts.list()[0][field]);}assert.equal(f.reveals(),0);});
+test('stale clipboard is reported as failure, never as copied',()=>{const f=fixture();f.clipboard.writeText=()=>{};assert.throws(()=>copyAccountField(f.accounts,f.clipboard,{id:'a',field:'password'}),/Copy failed/);});
+test('invalid/deleted fields leave clipboard untouched',()=>{const f=fixture();for(const args of [{id:'missing',field:'password'},{id:'a',field:'site'}])assert.throws(()=>copyAccountField(f.accounts,f.clipboard,args));assert.equal(f.clipboard.readText(),'previous clipboard');});
