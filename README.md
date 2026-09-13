@@ -1,45 +1,30 @@
 <img src="app/ui/logo.svg" width="84" alt="Agent Spaces logo">
 
-# Agent Spaces Browser
+# Agent Spaces
 
-A home for agents on your computer. Codex works in its own persistent browser tabs while you keep using your personal browser.
+I built Agent Spaces because I wanted agents to have their own home on my laptop. Their browser work interrupted mine, and their activity felt scattered across chats, tabs and apps. I wanted somewhere I could see what they were doing, which accounts they were using, and what needed my attention, separate from my personal workspace.
 
-This is the **Windows x64 browser-only beta**. It includes no VM, desktop automation, game code, personal accounts, or browser profile. MIT licensed.
+Agent Spaces has a built-in browser that connects directly to Codex. Once connected, Codex uses it automatically for browser tasks. You keep prompting in the same Codex task, with its conversation context intact. Crucially, agents don’t need to take over your screen or mouse: they work in their own browser tabs while you use your computer normally.
 
-## Why I built it
+Here’s what it adds around Codex:
 
-I wanted agents to have a home on my laptop. When their work happened in my browser, it got in the way of what I was doing. I also found it hard to keep track of work scattered across chats, tabs and apps. I wanted to open one place and see what my agents were doing, which accounts they were using, and what needed my attention—separate from my own online life.
+- **Separation:** agents browse independently without interrupting your personal workspace.
+- **Accounts:** agents create accounts or use yours, saving and reusing logins across tasks.
+- **Verification:** agents independently use saved email inboxes to retrieve codes, follow links and complete supported signups.
+- **Alerts:** desktop notifications take you straight to the tab needing input, even while you’re using another app.
+- **Handoff:** take control, complete the human step and quickly return control with the session intact.
+- **Concurrent work:** different agents work in separate tabs.
+- **Visibility:** tabs and searchable history keep agent activity visible.
 
-Agent Spaces gives that work a persistent place to live. An agent can open its own tab, complete a task, and leave its website session and confirmed login available for the next agent. I can watch, step in when needed, or leave it working while I use my computer normally.
+For example, one agent can create and save an email account. Another can use it to register elsewhere, open the inbox, complete email verification, and save the new login. It can then work inside that account, and future agents can pick up using the saved login.
 
-An agent should not quietly sit waiting for a CAPTCHA or a login while I assume it is still working. When a connected agent requests help, AS displays a branded alert over other Windows apps. Clicking it takes me to the relevant tab or account choice. I finish the step and return control to the waiting agent. It does not depend on me remembering to check the right Codex chat. Alerts do not steal keyboard focus; Windows settings, exclusive fullscreen apps or other always-on-top windows can affect visibility.
+The GitHub account hosting this project was created through Agent Spaces using that workflow: an agent created the email account, another used it to create and verify the GitHub account, and its credentials were saved for subsequent work.
 
-## What AS adds around Codex
+Some agent products offer overlapping features. Agent Spaces brings these capabilities together in one workspace you can see and manage.
 
-Codex is the agent: it understands the task, decides what to do, and calls tools. AS supplies the browser workspace and continuity around those actions:
+This release supports **Windows x64, Codex, and browser tasks**. I also have prototypes that extend Agent Spaces to desktop apps running inside a virtual machine, so agents can work there without taking over your personal desktop. I’m working toward macOS and Linux support, alongside connections to other agent harnesses, including Claude. Those capabilities are not included in this release.
 
-- **One visible home for browser work**, with task tabs, ownership, activity history and a profile separate from my personal browser.
-- **Accounts that outlive a chat.** For example, one agent can create an email account and save it after success; another can use that saved email to sign up elsewhere, retrieve the verification message and save the new login for future tasks.
-- **Attention that reaches me.** A waiting agent can trigger an app-level alert while I am elsewhere on the laptop, with a direct route back to the relevant work.
-- **A shared handoff flow.** Take control, finish the human step, then return control without rebuilding the browser session.
-
-Some agent products already offer their own browsers or overlapping features. AS's purpose is to bring these controls, accounts and ongoing browser work together in a workspace I can see and manage. It does not replace Codex, make the model intrinsically smarter, or guarantee that an agent can complete every website's workflow.
-
-## What it does
-
-- Runs multiple agents in separate owned tabs, with persistent cookies and website sessions.
-- Lets you watch, take control, complete a CAPTCHA or login, and return control to a waiting agent.
-- Gives agents snapshots, screenshots, navigation, clicks, typing, scrolling and popup discovery through MCP.
-- Tracks child tabs opened by verification links so agents can continue in the right tab.
-- Stores confirmed account credentials locally with Windows-backed encryption; includes named account selection, one default per platform, manual entry, autofill, copy and deletion.
-- Captures supported successful account creation automatically. Unfamiliar manual logins/signups offer a local Save login choice. Rejected or incomplete attempts are not automatically saved.
-- Keeps searchable activity history by tab, with rename, delete, and delete-with-history controls.
-- Shows branded help alerts that open the relevant tab or account choice.
-- Registers its MCP connector and browser preference in Codex automatically on first launch. Settings lets you turn the preference off.
-
-## Install from source
-
-Requirements: Windows 10/11 x64, [Node.js 22 or newer](https://nodejs.org/), [Codex CLI](https://developers.openai.com/codex/cli/) on PATH, and Codex desktop or CLI. To build WebView2, install the [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0). Its browser runtime is [Microsoft Edge WebView2 Evergreen](https://developer.microsoft.com/microsoft-edge/webview2/).
+To get started, clone the repository and run the setup launcher:
 
 ```powershell
 git clone https://github.com/Seraphine-ops/agent-spaces-windows-codexonly-browseronly.git
@@ -47,52 +32,12 @@ cd agent-spaces-windows-codexonly-browseronly
 & '.\Setup Agent Spaces.cmd'
 ```
 
-Or download the source ZIP, extract it, and double-click **Setup Agent Spaces.cmd**. Setup installs missing prerequisites through Windows Package Manager, installs the locked npm dependencies, builds the browser host, registers Codex on launch, and opens AS. Windows may ask for installation permission. It does not install a VM. Already have the prerequisites and prefer manual setup?
+Alternatively, download the source ZIP, extract it, and double-click **Setup Agent Spaces.cmd**. Setup installs missing prerequisites, builds the browser workspace and opens Agent Spaces. Windows may ask for installation permission. On first launch, Agent Spaces registers its Codex connector and browser preference. Restart Codex so it loads the tools.
 
-```powershell
-npm ci
-npm run build:webview2
-npm start
-```
+**Take control** pauses agent input for one tab. **Return to agent** lets a task that is still running and waiting continue from the updated page. **Pause browser agents** pauses the entire browser workspace, including new tasks, until you resume it. Closing the window keeps Agent Spaces running in the system tray; **Quit runtime** stops it.
 
-Without the WebView2 build, `npm start` uses bundled Electron. With it built, a fresh installation defaults to WebView2. Existing settings take precedence. Both engines keep separate cookies and site storage; Accounts is shared between them.
+Saved credentials are encrypted locally using Windows-backed storage. Connected agents can retrieve them, and information requested by an agent may enter its model provider’s context. Tabs within the same browser engine share website sessions; they are not separate account containers. Agent Spaces does not restrict Codex’s other computer tools. Some websites and verification methods still require human help.
 
-If the CLI is missing, install it with `npm install -g @openai/codex`, then reopen AS. First launch registers `agent-browser` with `codex mcp add` and adds a marked browser preference to your Codex instructions, preserving unrelated text and backing up changed instruction files. Restart Codex once so it loads the new tools. See [Codex MCP documentation](https://developers.openai.com/codex/mcp).
+For technical details, see [SECURITY.md](SECURITY.md), [PRIVACY.md](PRIVACY.md), [SECURITY-REVIEW.md](SECURITY-REVIEW.md), [CONTRIBUTING.md](CONTRIBUTING.md) and [ARCHITECTURE.md](ARCHITECTURE.md).
 
-Ask Codex: **“Use Agent Spaces to open example.com in a new task tab and tell me its heading.”** AS should open automatically when a browser tool is called. The app contains no model/API key: Codex runs the agent using your own Codex access.
-
-## Windows installer
-
-Build it locally with `npm run dist` after the WebView2 build. The installer appears in `dist/`. GitHub Actions also builds an installer artifact after its Windows checks pass. Beta builds are unsigned, so Windows may display an unknown-publisher warning; only install a build whose source and origin you trust.
-
-The installer bundles Electron and the self-contained .NET WebView2 host. **Node.js and Codex CLI are still prerequisites** for the MCP connector; the Edge WebView2 runtime must be installed to use that engine. This beta does not silently install system dependencies.
-
-## Everyday use
-
-- **Take control** pauses that tab's agent input. Finish your step and choose **Return to agent**. A Codex task must still be running and waiting to continue automatically.
-- **Pause browser agents** pauses the whole workspace, including new agent tasks. It persists across restarts; click **Resume browser agents** to clear it. Manual browsing remains available.
-- **Accounts** lets you add a login without putting it in chat. A named account overrides the default for that request only. Multiple matching accounts without a default require your choice.
-- **Saved logins** fills a matching login form during manual control; it does not submit. Cross-origin embedded forms may need manual typing.
-- **Close window** keeps the runtime in the system tray. **Quit runtime** stops browser tasks.
-- **Settings** contains the Codex preference and engine selector. Restart AS after changing engines.
-
-## Data and boundaries
-
-Data lives in `%LOCALAPPDATA%\Agent Spaces Browser`, outside the checkout and installation. Accounts, cookies and history survive upgrades. Deleting a tab does not sign out a website or delete saved accounts.
-
-Tabs share a browser profile: ownership prevents other agent sessions from issuing tools to your tab, **not** from seeing shared website sessions. This is not a separate identity/container per tab. Saved credentials can be retrieved by trusted connected agents. AS does not restrict Codex's other host tools or turn your laptop into a security sandbox. Read [SECURITY.md](SECURITY.md) before using sensitive accounts.
-
-There is no AS analytics or AS cloud service. Websites receive normal browser traffic; observations and retrieved credentials can enter your agent provider's context. Clipboard copying uses the Windows clipboard. Local tab state can contain full URLs, while the activity history deliberately excludes typed text and URL query strings. See [PRIVACY.md](PRIVACY.md).
-
-## Development
-
-```powershell
-npm test
-npm run test:all
-```
-
-Integration tests use temporary profiles and synthetic local websites. They disable Codex setup and do not use real accounts. Build WebView2 first. See [ARCHITECTURE.md](ARCHITECTURE.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Beta limits
-
-Windows x64 only. No desktop/VM features. Account capture is heuristic and cannot recognize every website; agents must explicitly record a final successful account when automatic capture cannot confirm it. CAPTCHA, MFA, passkeys and site restrictions can require a human. Success on one protected site is not a guarantee on another. Automatic browser routing is an agent instruction, not a security policy that intercepts every possible browser launch.
+MIT licensed.
