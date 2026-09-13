@@ -246,7 +246,8 @@ app.whenReady().then(async()=>{
  tray.setContextMenu(Menu.buildFromTemplate([{label:'Open Agent Spaces',click:()=>{win.show();win.focus();}},{label:'Quit Agent Spaces',click:()=>app.quit()}]));tray.on('double-click',()=>win.show());
  win.on('focus',()=>win.flashFrame(false));
  win.on('resize',()=>{layout();emit()});win.on('close',event=>{if(!quitting){event.preventDefault();win.hide();}});
- await win.webContents.loadFile(path.join(__dirname,'ui','index.html'));if(process.env.AGENT_SPACES_TEST!=='1')win.show();else if(process.env.AGENT_SPACES_RENDER_TEST==='1'){win.setPosition(-20000,-20000);win.showInactive();}
+ await win.webContents.loadFile(path.join(__dirname,'ui','index.html'));if(process.env.AGENT_SPACES_TEST!=='1')win.show();else if(process.env.AGENT_SPACES_RENDER_TEST==='1'){// Hosted CI needs an on-screen surface; local tests stay off the user's desktop.
+ if(process.env.CI==='true')win.setPosition(0,0);else win.setPosition(-20000,-20000);win.showInactive();}
  await workspace.restore();for(const t of workspace.tabs.values()){if(!t.view.native){win.contentView.addChildView(t.view);t.view.setVisible(false);}}emit();
  fs.writeFileSync(runtimeFile,JSON.stringify({port:server.address().port,token,pid:process.pid}),{mode:0o600});
  setInterval(()=>{workspace.expire();credentialCapture.sweep();},15000).unref();
